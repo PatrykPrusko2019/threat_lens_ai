@@ -1,5 +1,6 @@
 from app.db.models.alert import Alert
 from app.repositories.alert_repository import AlertRepository
+from app.db.enums import AlertStatus
 
 
 class AlertService:
@@ -25,3 +26,11 @@ class AlertService:
     
     def get_alerts(self) -> list[Alert]:
         return self.repo.get_all()
+    
+    def update_status(self, alert_id: int, status: AlertStatus):
+        alert = self.repo.get_by_id(alert_id)
+        if not alert:
+            raise ValueError("Alert not found")
+        
+        alert.status = status
+        return self.repo.save(alert)
