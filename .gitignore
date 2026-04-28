@@ -8,3 +8,4 @@ __pycache__/
 .vscode/
 ml/data/*.csv
 ml/models/*.pkl
+temp_repo/
