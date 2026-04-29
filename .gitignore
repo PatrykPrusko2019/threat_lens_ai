@@ -9,3 +9,7 @@ __pycache__/
 ml/data/*.csv
 ml/models/*.pkl
 temp_repo/
+ml/data/*.csv
+ml/data/**/*.csv
+ml/models/*.pkl
+ml/models/**/*.pkl

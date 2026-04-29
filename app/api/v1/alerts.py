@@ -5,7 +5,6 @@ from app.api.dependencies.auth import require_admin
 from app.db.session import get_db
 from app.db.models.user import User
 from app.repositories.alert_repository import AlertRepository
-from app.schemas.alert import AlertResponse
 from app.services.alert_service import AlertService
 from app.schemas.alert import AlertUpdateRequest, AlertResponse
 
