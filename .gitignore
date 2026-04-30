@@ -6,6 +6,9 @@ __pycache__/
 .ruff_cache/
 .idea/
 .vscode/
-ml/data/*.csv
+ml/data/*
+!ml/data/.gitkeep
 ml/models/*.pkl
 temp_repo/
+ml/models/*.pkl
+ml/models/**/*.pkl
