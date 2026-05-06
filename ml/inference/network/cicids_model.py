@@ -1,20 +1,24 @@
 import joblib
 import numpy as np
+from ml.inference.network.cicids_features import CICIDS_FEATURES
 
 MODEL_PATH = "ml/models/network/cicids_random_forest_model.pkl"
-EXPECTED_FEATURES = 57
 
 class CICIDSModel:
     def __init__(self):
         self.model = joblib.load(MODEL_PATH)
 
-    def predict(self, features: list[float]) -> dict:
-        if len(features) != EXPECTED_FEATURES:
+    def predict(self, features: dict[str, float]) -> dict:
+        missing_features = [feature for feature in CICIDS_FEATURES if feature not in features]
+        
+        if missing_features:
             raise ValueError(
-                f"Invalid number of features. Expected {EXPECTED_FEATURES}, got {len(features)}."
+                f"Missing required features: {missing_features[:10]}"
             )
 
-        X = np.array(features).reshape(1, -1)
+        ordered_features = [features[feature] for feature in CICIDS_FEATURES]
+
+        X = np.array(ordered_features).reshape(1, -1)
 
         prediction = int(self.model.predict(X)[0])
         probability = self.model.predict_proba(X)[0]

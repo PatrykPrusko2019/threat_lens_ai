@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 class IntrusionCheckRequest(BaseModel):
-    features: list[float] = Field(min_length=57, max_length=57)
+    features: dict[str, float] = Field(description="Dictionary with CICIDS feature names as keys")
 
 
 class IntrusionCheckResponse(BaseModel):

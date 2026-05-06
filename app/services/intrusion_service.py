@@ -12,7 +12,7 @@ class IntrusionService:
         self.model = CICIDSModel()
 
 
-    def check_intrusion(self, features: list[float]) -> dict:
+    def check_intrusion(self, features: dict[str, float]) -> dict:
         result = self.model.predict(features)
 
         if not result["intrusion"]:
@@ -24,7 +24,7 @@ class IntrusionService:
             }
 
         event = SecurityEvent(
-            event_type="Network_intrusion_detected",
+            event_type="network_intrusion_detected",
             severity="critical",
             source_ip=None,
             description=(
@@ -37,7 +37,7 @@ class IntrusionService:
 
         alert = Alert(
             event_id=event.id,
-            title="NEtwork intrusion detected",
+            title="Network intrusion detected",
             severity="critical",
             risk_score=95,
             description=(
