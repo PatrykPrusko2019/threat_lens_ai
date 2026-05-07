@@ -2,6 +2,8 @@ from app.db.models.alert import Alert
 from app.db.models.event import SecurityEvent
 from app.repositories.alert_repository import AlertRepository
 from app.repositories.event_repository import EventRepository
+from app.schemas.network_event import NetworkEventRequest
+from ml.inference.network.feature_builder import NetworkFeatureBuilder
 from ml.inference.network.cicids_model import CICIDSModel
 
 
@@ -12,7 +14,13 @@ class IntrusionService:
         self.model = CICIDSModel()
 
 
-    def check_intrusion(self, features: dict[str, float]) -> dict:
+    def check_intrusion(
+            self,
+            event: NetworkEventRequest,  
+    ) -> dict:
+        
+        builder = NetworkFeatureBuilder()
+        features = builder.build(event)
         result = self.model.predict(features)
 
         if not result["intrusion"]:
