@@ -28,6 +28,8 @@ class IntrusionService:
             return {
                 "intrusion": False,
                 "attack_probability": model_result["attack_probability"],
+                "detection_source": None,
+                "detection_reason": None,
                 "event_id": None,
                 "alert_id": None,
             }
@@ -72,6 +74,8 @@ class IntrusionService:
         return {
             "intrusion": True,
             "attack_probability": model_result["attack_probability"],
+            "detection_source": detection_source,
+            "detection_reason": detection_reason,
             "event_id": event_record.id,
             "alert_id": alert.id,
             "description": alert_description

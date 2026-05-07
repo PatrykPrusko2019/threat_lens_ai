@@ -7,6 +7,8 @@ class IntrusionCheckRequest(BaseModel):
 class IntrusionCheckResponse(BaseModel):
     intrusion: bool
     attack_probability: float
+    detection_source: str | None = None
+    detection_reason: str | None = None
     event_id: int | None = None
     alert_id: int | None = None
         
