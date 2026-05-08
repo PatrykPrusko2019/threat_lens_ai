@@ -1,137 +1,338 @@
-# 🚀 ThreatLens AI — Cybersecurity & Fraud Detection Platform
+# 🚀 ThreatLens AI
 
-ThreatLens AI is a backend-driven platform for detecting anomalies, fraud, and security threats using machine learning and rule-based analysis.
+## AI-Powered Cybersecurity & Fraud Detection Platform
 
-The system processes security events, analyzes them using AI models, calculates risk scores, and generates alerts — similar to real-world SIEM (Security Information and Event Management) systems.
+ThreatLens AI is an advanced cybersecurity and fraud detection platform built with:
 
----
+- Machine Learning
+- Deep Learning
+- Hybrid AI Detection
+- Rule-Based Security Analysis
 
-## 🧠 Key Features
-
-* 🔐 **Authentication & Authorization**
-
-  * JWT-based authentication
-  * Role-based access control (user/admin)
-
-* 📊 **Security Events**
-
-  * Logging and storing system events
-  * Event classification (severity, type, source)
-
-* 🤖 **Anomaly Detection (AI)**
-
-  * Isolation Forest model for anomaly detection
-  * Detection of suspicious behavior in event streams
-
-* 💳 **Fraud Detection (Kaggle Dataset)**
-
-  * Trained on real-world credit card fraud dataset
-  * Offline training + API inference
-  * Real-time fraud scoring
-
-* ⚠️ **Alert System**
-
-  * Automatic alert generation for anomalies
-  * Risk scoring mechanism (0–100)
-  * Alert lifecycle (open/closed)
-
-* 🧱 **Clean Architecture**
-
-  * Separation of concerns (API, services, repositories, models)
-  * Scalable modular design
+The platform analyzes network traffic and security events in real time, detects anomalies and intrusions, generates alerts, and simulates core SIEM/SOC functionalities used in modern cybersecurity systems.
 
 ---
 
-## 🏗️ Architecture
+# 🔥 Core Features
 
-```
-Client → API (FastAPI)
-       → Services
-       → Repositories
-       → Database (PostgreSQL)
+## 🔐 Authentication & Authorization
+
+- JWT-based authentication
+- Role-based access control (RBAC)
+- Admin-protected endpoints
+- Secure API access
+
+---
+
+## ⚠️ Intrusion Detection
+
+Hybrid intrusion detection system using:
+
+- RandomForest classifier
+- Rule-based cybersecurity engine
+- Feature engineering pipeline
+
+Capabilities:
+
+- Network anomaly detection
+- Packet flood detection
+- Suspicious traffic analysis
+- AI-based attack classification
+
+---
+
+## 🧠 Deep Learning Anomaly Detection
+
+TensorFlow/Keras Autoencoder-based anomaly detection:
+
+- Reconstruction error analysis
+- Threshold-based anomaly scoring
+- Deep learning inference API
+- Normalized anomaly scoring
+
+---
+
+## 💳 Fraud Detection
+
+Fraud detection module trained on real-world financial transaction datasets:
+
+- Credit card fraud analysis
+- Risk scoring
+- Suspicious transaction detection
+- Machine learning inference
+
+---
+
+## 🚨 Security Events & Alerts
+
+ThreatLens AI generates:
+
+- Security events
+- AI-powered alerts
+- Risk scores
+- Explainable detection details
+
+Alert system features:
+
+- Open/closed lifecycle
+- Severity classification
+- Event correlation
+- Threat tracking
+
+---
+
+# 🏗️ System Architecture
+
+```text
+Client
+  ↓
+FastAPI API
+  ↓
+Services Layer
+  ↓
+Repositories Layer
+  ↓
+PostgreSQL Database
 
 AI Pipeline:
-Events → Feature Engineering → Model → Risk Score → Alert
+Raw Event
+  ↓
+Feature Engineering
+  ↓
+ML / DL Models
+  ↓
+Detection Engine
+  ↓
+Security Event
+  ↓
+Alert
 ```
 
 ---
 
-## 🧰 Tech Stack
+# 🧰 Tech Stack
 
-* **Backend**: FastAPI (Python)
-* **Database**: PostgreSQL
-* **ORM**: SQLAlchemy
-* **Migrations**: Alembic
-* **AI/ML**: scikit-learn (Isolation Forest)
-* **Containerization**: Docker
-* **Authentication**: JWT
+## Backend
+
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+- Alembic
+- Pydantic
 
 ---
 
-## 📂 Project Structure
+## AI / Machine Learning
 
-```
+- scikit-learn
+- TensorFlow
+- Keras
+- RandomForest
+- IsolationForest
+- Autoencoder Neural Networks
+
+---
+
+## Security
+
+- JWT Authentication
+- RBAC Authorization
+- Hybrid AI + Rule Detection
+
+---
+
+## Infrastructure
+
+- Docker
+- Docker Compose
+- GitHub PR Workflow
+
+---
+
+# 📂 Project Structure
+
+```text
 app/
   api/
   services/
   repositories/
   db/
   schemas/
+
 ml/
   training/
   inference/
+  models/
+  reports/
+
+docs/
+  architecture.md
+  ml_pipeline.md
+  api_examples.md
+
 docker/
 migrations/
+tests/
 ```
 
 ---
 
-## 🧪 Machine Learning
+# 🧪 Machine Learning Pipeline
 
-The anomaly detection model is trained using:
+ThreatLens AI currently supports multiple detection approaches:
 
-* Isolation Forest (unsupervised learning)
-* Real-world fraud dataset (Kaggle)
-* Evaluation using classification metrics (precision, recall, F1-score)
+| Detection Type | Technology |
+|---|---|
+| Intrusion Detection | RandomForest |
+| Anomaly Detection | IsolationForest |
+| Deep Learning Detection | TensorFlow Autoencoder |
+| Hybrid Detection | AI + Rule Engine |
 
 ---
 
-## 🚀 How to Run
+# 📊 Example API Endpoints
+
+| Endpoint | Description |
+|---|---|
+| `POST /auth/login` | User authentication |
+| `GET /users/me` | Current authenticated user |
+| `POST /intrusion/check` | Network intrusion detection |
+| `POST /autoencoder/check` | Deep learning anomaly detection |
+| `POST /fraud/check` | Fraud detection |
+| `GET /alerts` | Generated security alerts |
+
+---
+
+# 📸 API Examples
+
+Detailed API screenshots and examples are available here:
+
+```text
+docs/api_examples.md
+```
+
+---
+
+# 🚀 Running the Project
+
+## Docker
 
 ```bash
 docker compose up -d
+```
+
+---
+
+## Database Migration
+
+```bash
 alembic upgrade head
+```
+
+---
+
+## Start API
+
+```bash
 uvicorn app.main:app --reload
 ```
 
 ---
 
-## 🔍 Example API Endpoints
+# 📚 Datasets
 
-* `POST /auth/login`
-* `GET /users/me`
-* `POST /events`
-* `GET /anomaly`
-* `POST /fraud/check`
-* `GET /alerts`
+Datasets used in the project:
 
----
+- CICIDS network intrusion dataset
+- Credit card fraud dataset
 
-## 🎯 Project Goal
+More information:
 
-This project demonstrates:
-
-* AI integration in backend systems
-* Cybersecurity event analysis
-* Fraud detection using real datasets
-* Scalable backend architecture
+```text
+docs/datasets.md
+```
 
 ---
 
-## 💡 Future Improvements
+# 📄 Documentation
 
-* Advanced ML models (Autoencoders, LSTM)
-* Real-time streaming (Kafka)
-* Dashboard (React)
-* RAG + LLM-based threat analysis
-* Cloud deployment (Azure)
+The project includes continuously updated technical documentation covering:
+
+- System architecture
+- AI/ML pipelines
+- API examples
+- Detection workflows
+- Dataset descriptions
+- Future development plans
+
+Documentation is maintained in:
+
+```text
+docs/
+```
+
+Additional project notes, experiments, and research materials are also maintained during development.
+
+# 🎯 Project Goals
+
+This project focuses on:
+
+- AI integration in backend systems
+- Cybersecurity event analysis
+- Fraud detection using real-world datasets
+- Deep learning anomaly detection
+- Hybrid AI security systems
+- Scalable backend architecture
+
+---
+
+# 🔮 Future Development
+
+## AI / ML
+
+- LSTM sequence analysis
+- Transformer-based detection
+- Explainable AI
+- Threat scoring systems
+
+---
+
+## LLM & RAG
+
+- AI security assistant
+- Threat explanation generation
+- RAG knowledge base
+- Threat intelligence integration
+
+---
+
+## Frontend
+
+- React dashboard
+- Alert management UI
+- Threat monitoring panels
+
+---
+
+## Infrastructure
+
+- Azure deployment
+- Kafka streaming
+- CI/CD pipelines
+- Production Docker setup
+
+---
+
+# 📌 Status
+
+🚧 Active development project
+
+The platform is continuously expanded with new AI detection modules and cybersecurity features.
+
+---
+
+# 👨‍💻 Author
+
+Patryk Prusko
+
+AI • Backend • Cybersecurity • Machine Learning
