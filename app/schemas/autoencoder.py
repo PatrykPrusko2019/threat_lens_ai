@@ -6,3 +6,5 @@ class AutoencoderResponse(BaseModel):
     raw_anomaly_score: float
     reconstruction_error: float
     threshold: float
+    event_id: int | None = None
+    alert_id: int | None = None
