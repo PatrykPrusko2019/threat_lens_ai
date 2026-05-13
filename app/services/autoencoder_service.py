@@ -24,27 +24,33 @@ class AutoencoderService:
         if not result["anomaly"]:
             return {
                 **result,
+                "severity": None,
+                "risk_score": None,
                 "event_id": None,
                 "alert_id": None,
             }
         
+        severity = self._map_severity(result["anomaly_score"])
+        risk_score = self._map_risk_score(result["anomaly_score"])
+        
         event_description = (
-            "Network anomaly detected by TensorFlow/Keras Autoencoder. "
+            "Network anomaly detected by Autoencoder anomaly detection model. "
             f"Anomaly score: {result['anomaly_score']:.2f}. "
             f"Raw anomaly score: {result['raw_anomaly_score']:.4f}. "
-            f"Reconstructuin error: {result['reconstruction_error']:.6f}. "
+            f"Reconstruction error: {result['reconstruction_error']:.6f}. "
             f"Threshold: {result['threshold']:.6f}."
         )
 
         alert_description = (
             "Potential anomalous network behavior detected by Autoencoder model. "
             f"Normalized anomaly score: {result['anomaly_score']:.2f}/100. "
+            f"Severity: {severity}. "
             "Security investigation recommended."
         )
 
         event_record = SecurityEvent(
             event_type="autoencoder_network_anomaly",
-            severity=self._map_severity(result["anomaly_score"]),
+            severity=severity,
             source_ip=event.source_ip,
             description=event_description,
         )
@@ -54,8 +60,8 @@ class AutoencoderService:
         alert = Alert(
             event_id=event_record.id,
             title="Autoencoder network anomaly detected",
-            severity=self._map_severity(result["anomaly_score"]),
-            risk_score=self._map_risk_score(result["anomaly_score"]),
+            severity=severity,
+            risk_score=risk_score,
             description=alert_description,
         )
 
@@ -63,6 +69,8 @@ class AutoencoderService:
 
         return {
             **result,
+            "severity": severity,
+            "risk_score": risk_score,
             "event_id": event_record.id,
             "alert_id": alert.id,
         }
