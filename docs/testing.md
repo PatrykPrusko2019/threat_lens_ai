@@ -94,7 +94,7 @@ Current test result:
 
 Screenshot from local test execution:
 
-![Core API Tests](images/pytest_core_api_tests.png)
+![Core API Tests](images/pytest_core_api_tests.PNG)
 
 ---
 

@@ -7,6 +7,7 @@ The screenshots below demonstrate:
 - Intrusion detection
 - Deep learning anomaly detection
 - Hybrid AI + rule-based detection
+- Security event and alert generation
 - Alert management
 
 ---
@@ -119,60 +120,25 @@ POST /autoencoder/check
 
 ## Description
 
-The autoencoder endpoint performs deep learning-based anomaly detection using:
+The Autoencoder endpoint performs deep learning-based anomaly detection for network traffic.
 
-- TensorFlow / Keras Autoencoder
-- Reconstruction error analysis
+It uses:
+
+- Feature engineering
+- Autoencoder reconstruction error
 - Threshold-based anomaly classification
+- Normalized anomaly scoring
+- Raw anomaly score for ML/debugging
+- Severity mapping
+- Risk score generation
+- Automatic `SecurityEvent` creation
+- Automatic `Alert` generation
 
-The endpoint returns:
-
-- Anomaly status
-- Normalized anomaly score
-- Raw anomaly score
-- Reconstruction error
-- Detection threshold
-
----
-
-# Example 1 — Normal Traffic
-
-## Example Request
-
-```json
-{
-  "source_ip": "192.168.1.10",
-  "destination_ip": "10.0.0.5",
-  "protocol": "TCP",
-  "duration": 20,
-  "bytes_sent": 5000,
-  "bytes_received": 7000,
-  "packets_sent": 120,
-  "packets_received": 140
-}
-```
-
-## Example Response
-
-```json
-{
-  "anomaly": false,
-  "anomaly_score": 3.013811008408795,
-  "raw_anomaly_score": 0.3517243866901166,
-  "reconstruction_error": 0.004820357935894597,
-  "threshold": 0.013704929536607673
-}
-```
-
-## Swagger Screenshot
-
-![Autoencoder Normal](images/swagger_autoencoder_normal.PNG)
+This endpoint is designed to support future dashboard views, LLM-based alert explanations, and AI security assistant workflows.
 
 ---
 
-# Example 2 — Anomalous Traffic
-
-## Example Request
+## Example Request — Anomalous Traffic
 
 ```json
 {
@@ -187,19 +153,55 @@ The endpoint returns:
 }
 ```
 
-## Example Response
+## Example Response — Anomaly Detected
 
 ```json
 {
   "anomaly": true,
-  "anomaly_score": 23.597697120145508,
-  "raw_anomaly_score": 9.588512764370867,
-  "reconstruction_error": 0.13140989179656598,
-  "threshold": 0.013704929536607673
+  "anomaly_score": 23.59,
+  "raw_anomaly_score": 9.58,
+  "reconstruction_error": 0.131,
+  "threshold": 0.013,
+  "severity": "medium",
+  "risk_score": 23,
+  "event_id": 15,
+  "alert_id": 11
 }
 ```
 
+## Response Fields
+
+| Field | Description |
+|---|---|
+| `anomaly` | Indicates whether the Autoencoder detected anomalous behavior |
+| `anomaly_score` | Normalized anomaly score designed for API/UI usage |
+| `raw_anomaly_score` | Raw technical score used for ML debugging and analysis |
+| `reconstruction_error` | Difference between original and reconstructed network features |
+| `threshold` | Decision threshold used to classify anomaly |
+| `severity` | Mapped severity level based on anomaly score |
+| `risk_score` | Numeric risk score used by alerting system |
+| `event_id` | ID of generated SecurityEvent |
+| `alert_id` | ID of generated Alert |
+
 ## Swagger Screenshot
+
+![Autoencoder Alert Response](images/swagger_autoencoder_alert_response.PNG)
+
+---
+
+## Additional Autoencoder Examples
+
+### Normal Traffic
+
+This example shows network traffic that was classified as normal by the Autoencoder.
+
+![Autoencoder Normal](images/swagger_autoencoder_normal.PNG)
+
+---
+
+### Anomalous Traffic
+
+This example shows anomalous network traffic detected by the Autoencoder.
 
 ![Autoencoder Attack](images/swagger_autoencoder_attack.PNG)
 
@@ -220,6 +222,7 @@ The alerts endpoint returns generated security alerts created by:
 - Intrusion detection
 - Rule-based detection
 - AI anomaly detection
+- Autoencoder anomaly detection
 
 Each alert contains:
 

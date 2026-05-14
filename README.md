@@ -9,7 +9,7 @@ ThreatLens AI is an advanced cybersecurity and fraud detection platform built wi
 - Hybrid AI Detection
 - Rule-Based Security Analysis
 
-The platform analyzes network traffic and security events in real time, detects anomalies and intrusions, generates alerts, and simulates core SIEM/SOC functionalities used in modern cybersecurity systems.
+The platform analyzes network traffic and security events, detects anomalies and intrusions, generates alerts, and simulates core SIEM/SOC functionalities used in modern cybersecurity systems.
 
 ---
 
@@ -38,17 +38,29 @@ Capabilities:
 - Packet flood detection
 - Suspicious traffic analysis
 - AI-based attack classification
+- Automatic `SecurityEvent` creation
+- Automatic `Alert` generation
 
 ---
 
 ## 🧠 Deep Learning Anomaly Detection
 
-TensorFlow/Keras Autoencoder-based anomaly detection:
+ThreatLens AI includes an Autoencoder-based anomaly detection module for identifying suspicious network behavior.
 
+The Autoencoder learns patterns of normal network traffic and detects anomalies using reconstruction error analysis.
+
+Key capabilities:
+
+- Autoencoder-based anomaly detection
 - Reconstruction error analysis
-- Threshold-based anomaly scoring
-- Deep learning inference API
+- Threshold-based anomaly classification
 - Normalized anomaly scoring
+- Raw anomaly score for ML/debugging
+- Severity mapping based on anomaly score
+- Risk score generation
+- Automatic `SecurityEvent` creation
+- Automatic `Alert` generation
+- API-ready response for future dashboards and LLM explanations
 
 ---
 
@@ -169,6 +181,8 @@ docs/
   architecture.md
   ml_pipeline.md
   api_examples.md
+  datasets.md
+  testing.md
 
 docker/
 migrations/
@@ -196,9 +210,9 @@ ThreatLens AI currently supports multiple detection approaches:
 |---|---|
 | `POST /auth/login` | User authentication |
 | `GET /users/me` | Current authenticated user |
-| `POST /intrusion/check` | Network intrusion detection |
-| `POST /autoencoder/check` | Deep learning anomaly detection |
-| `POST /fraud/check` | Fraud detection |
+| `POST /intrusion/check` | Hybrid network intrusion detection using ML and rule engine |
+| `POST /autoencoder/check` | Autoencoder anomaly detection with severity, risk score, event creation, and alert generation |
+| `POST /fraud/check` | Fraud detection for financial transactions |
 | `GET /alerts` | Generated security alerts |
 
 ---
@@ -210,6 +224,48 @@ Detailed API screenshots and examples are available here:
 ```text
 docs/api_examples.md
 ```
+
+---
+
+# 🧠 Autoencoder Detection Flow
+
+The Autoencoder endpoint provides a complete deep learning anomaly detection flow:
+
+```text
+Network Event
+  ↓
+Feature Engineering
+  ↓
+Autoencoder Inference
+  ↓
+Reconstruction Error
+  ↓
+Anomaly Score
+  ↓
+Severity + Risk Score
+  ↓
+SecurityEvent
+  ↓
+Alert
+```
+
+Example Autoencoder response:
+
+```json
+{
+  "anomaly": true,
+  "anomaly_score": 23.59,
+  "raw_anomaly_score": 9.58,
+  "reconstruction_error": 0.131,
+  "threshold": 0.013,
+  "severity": "medium",
+  "risk_score": 23,
+  "event_id": 15,
+  "alert_id": 11
+}
+```
+
+This makes the Autoencoder module ready for future dashboard visualization, alert explanations, and LLM-based security analysis.
 
 ---
 
@@ -268,7 +324,6 @@ More details:
 docs/testing.md
 ```
 
-
 ---
 
 # 📚 Datasets
@@ -295,6 +350,7 @@ The project includes continuously updated technical documentation covering:
 - API examples
 - Detection workflows
 - Dataset descriptions
+- Testing strategy
 - Future development plans
 
 Documentation is maintained in:
@@ -304,6 +360,8 @@ docs/
 ```
 
 Additional project notes, experiments, and research materials are also maintained during development.
+
+---
 
 # 🎯 Project Goals
 
