@@ -239,6 +239,38 @@ uvicorn app.main:app --reload
 
 ---
 
+# 🧪 Testing
+
+ThreatLens AI includes automated backend tests using `pytest` and FastAPI `TestClient`.
+
+The current test suite verifies:
+
+- API health checks
+- root endpoint availability
+- authentication protection for secured endpoints
+- access protection for users, alerts, intrusion detection, and autoencoder endpoints
+
+Run tests:
+
+```bash
+pytest -v
+```
+
+Current result:
+
+```text
+7 passed
+```
+
+More details:
+
+```text
+docs/testing.md
+```
+
+
+---
+
 # 📚 Datasets
 
 Datasets used in the project:
