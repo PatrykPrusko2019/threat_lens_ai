@@ -12,3 +12,4 @@ ml/models/*.pkl
 temp_repo/
 ml/models/*.pkl
 ml/models/**/*.pkl
+temp_repo/
