@@ -13,3 +13,5 @@ temp_repo/
 ml/models/*.pkl
 ml/models/**/*.pkl
 temp_repo/
+.env.test
+test_threatlens.db
