@@ -130,6 +130,41 @@ Tested scenarios:
 
 ## Test Results
 
+### Current Test Result — Alert Lifecycle Integration Tests
+
+Current test result:
+
+```text
+20 passed
+```
+
+This result includes:
+
+- health endpoint tests
+- root endpoint test
+- protected endpoint authentication tests
+- authentication and RBAC tests
+- alert listing tests
+- alert status update tests
+- alert lifecycle validation
+- admin and regular user permission validation
+
+New alert lifecycle scenarios verified:
+
+- admin can list alerts
+- regular user cannot list alerts
+- admin can close alert
+- regular user cannot close alert
+- updating a non-existing alert returns `404 Not Found`
+- invalid alert status returns `422 Unprocessable Entity`
+
+Screenshot from local test execution:
+
+![Alert Lifecycle Tests](images/pytest_alerts_lifecycle_20_passed.PNG)
+
+---
+
+
 ### Current Test Result — Auth and RBAC Integration Tests
 
 Current test result:
@@ -217,7 +252,13 @@ Current test coverage focuses on:
 | `/users/me` with valid token | Implemented |
 | Regular user RBAC protection | Implemented |
 | Admin access to users endpoint | Implemented |
-| Alert lifecycle tests | Planned |
+| Alert listing as admin | Implemented |
+| Regular user alert listing protection | Implemented |
+| Alert status update as admin | Implemented |
+| Regular user alert update protection | Implemented |
+| Non-existing alert update validation | Implemented |
+| Invalid alert status validation | Implemented |
+| Alert lifecycle tests | Implemented |
 | Intrusion response contract tests | Planned |
 | Autoencoder response contract tests | Planned |
 | Repository tests | Planned |
@@ -230,12 +271,13 @@ Current test coverage focuses on:
 
 Planned future tests include:
 
-- alert lifecycle tests
 - intrusion detection response validation
 - autoencoder response validation
-- invalid input validation tests
+- invalid input validation tests for detection endpoints
 - database repository tests
 - service layer tests
+- alert explanation tests
+- OpenAI/LLM provider tests with mocks
 - CI test execution with GitHub Actions
 - test coverage reports
 
