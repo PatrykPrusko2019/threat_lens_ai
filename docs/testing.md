@@ -130,6 +130,42 @@ Tested scenarios:
 
 ## Test Results
 
+### Current Test Result — Detection Endpoint Contract Tests
+
+Current test result:
+
+```text
+26 passed
+```
+
+This result includes:
+
+- health endpoint tests
+- root endpoint test
+- protected endpoint authentication tests
+- authentication and RBAC integration tests
+- alert lifecycle tests
+- detection endpoint contract tests
+
+New detection endpoint scenarios verified:
+
+- regular user cannot access `/intrusion/check`
+- regular user cannot access `/autoencoder/check`
+- invalid intrusion payload returns `422 Unprocessable Entity`
+- invalid autoencoder payload returns `422 Unprocessable Entity`
+- admin request to `/intrusion/check` returns expected response structure
+- admin request to `/autoencoder/check` returns expected response structure
+
+The detection endpoint tests use `monkeypatch` to avoid loading real ML/DL models during API contract testing. This keeps tests fast, isolated, and focused on API behavior, RBAC protection, validation, and response format.
+
+Screenshot from local test execution:
+
+![Detection Endpoint Tests](images/pytest_detection_endpoints_26_passed.PNG)
+
+---
+
+
+
 ### Current Test Result — Alert Lifecycle Integration Tests
 
 Current test result:
@@ -259,8 +295,12 @@ Current test coverage focuses on:
 | Non-existing alert update validation | Implemented |
 | Invalid alert status validation | Implemented |
 | Alert lifecycle tests | Implemented |
-| Intrusion response contract tests | Planned |
-| Autoencoder response contract tests | Planned |
+| Intrusion endpoint RBAC protection | Implemented |
+| Autoencoder endpoint RBAC protection | Implemented |
+| Intrusion invalid payload validation | Implemented |
+| Autoencoder invalid payload validation | Implemented |
+| Intrusion response contract test | Implemented |
+| Autoencoder response contract test | Implemented |
 | Repository tests | Planned |
 | Service layer tests | Planned |
 | CI test execution | Planned |
@@ -271,13 +311,12 @@ Current test coverage focuses on:
 
 Planned future tests include:
 
-- intrusion detection response validation
-- autoencoder response validation
-- invalid input validation tests for detection endpoints
-- database repository tests
+- repository tests
 - service layer tests
 - alert explanation tests
 - OpenAI/LLM provider tests with mocks
+- model inference wrapper tests
+- database transaction and rollback tests
 - CI test execution with GitHub Actions
 - test coverage reports
 

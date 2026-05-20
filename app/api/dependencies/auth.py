@@ -45,7 +45,7 @@ def get_current_user(
     
     return user
 
-def require_role(required_role: str) -> Callable:
+def require_role(require_role: str) -> Callable:
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
         if current_user.role != require_role:
             raise HTTPException(
