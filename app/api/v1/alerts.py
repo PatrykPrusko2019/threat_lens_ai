@@ -6,7 +6,9 @@ from app.db.session import get_db
 from app.db.models.user import User
 from app.repositories.alert_repository import AlertRepository
 from app.services.alert_service import AlertService
+from app.services.alert_explanation_service import AlertExplanationService
 from app.schemas.alert import AlertUpdateRequest, AlertResponse
+from app.schemas.alert_explanation import AlertExplanationResponse
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
 
@@ -18,16 +20,32 @@ def list_alerts(
     service = AlertService(AlertRepository(db))
     return service.get_alerts()
 
-@router.patch("/{alert_id}", response_model=AlertResponse)
-def update_alert(alert_id: int,
-                 payload: AlertUpdateRequest,
-                 db: Session = Depends(get_db),
-                 _=Depends(require_admin)):
-    service = AlertService(AlertRepository(db))
+@router.post("/{alert_id}/explain", response_model=AlertExplanationResponse)
+def explain_alert(
+    alert_id: int,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    service = AlertExplanationService(AlertRepository(db))
+
     try:
-        return service.update_status(alert_id, payload.status)
+        return service.explain_alert(alert_id)
+    
     except ValueError:
         raise HTTPException(status_code=404, detail="Alert not found")
     
-    
 
+@router.patch("/{alert_id}", response_model=AlertResponse)
+def update_alert(
+    alert_id: int,
+    payload: AlertUpdateRequest,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    service = AlertService(AlertRepository(db))
+    
+    try:
+        return service.update_status(alert_id, payload.status)
+    
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Alert not found")
