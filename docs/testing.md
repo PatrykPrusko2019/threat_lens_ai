@@ -130,6 +130,41 @@ Tested scenarios:
 
 ## Test Results
 
+### Current Test Result — Alert Explanation Endpoint Tests
+
+Current test result:
+
+```text
+30 passed
+```
+
+This result includes:
+
+- health endpoint tests
+- root endpoint test
+- protected endpoint authentication tests
+- authentication and RBAC integration tests
+- alert lifecycle tests
+- detection endpoint contract tests
+- alert explanation endpoint tests
+
+New alert explanation scenarios verified:
+
+- admin can generate an alert explanation
+- alert explanation response contains expected fields
+- transaction/fraud-related alerts return transaction-specific possible causes
+- regular user cannot generate alert explanations
+- explaining a non-existing alert returns `404 Not Found`
+
+The alert explanation endpoint currently uses a rule-based explanation service. This keeps the feature deterministic, testable, and independent from external LLM providers. It also prepares the architecture for future OpenAI, Ollama, or other LLM-based providers.
+
+Screenshot from local test execution:
+
+![Alert Explanation Tests](images/pytest_alert_explanations_30_passed.PNG)
+
+---
+
+
 ### Current Test Result — Detection Endpoint Contract Tests
 
 Current test result:
@@ -301,6 +336,10 @@ Current test coverage focuses on:
 | Autoencoder invalid payload validation | Implemented |
 | Intrusion response contract test | Implemented |
 | Autoencoder response contract test | Implemented |
+| Alert explanation endpoint | Implemented |
+| Alert explanation RBAC protection | Implemented |
+| Alert explanation response contract | Implemented |
+| Non-existing alert explanation validation | Implemented |
 | Repository tests | Planned |
 | Service layer tests | Planned |
 | CI test execution | Planned |
@@ -313,8 +352,8 @@ Planned future tests include:
 
 - repository tests
 - service layer tests
-- alert explanation tests
 - OpenAI/LLM provider tests with mocks
+- Ollama/local LLM provider tests with mocks
 - model inference wrapper tests
 - database transaction and rollback tests
 - CI test execution with GitHub Actions

@@ -255,6 +255,58 @@ Each alert contains:
 
 ---
 
+# Alert Explanation Endpoint
+
+## Endpoint
+
+```http
+POST /alerts/{alert_id}/explain
+```
+
+## Description
+
+The alert explanation endpoint generates a structured explanation for a selected security alert.
+
+The current implementation uses a deterministic rule-based explanation service. This makes the feature fast, testable, and independent from external LLM providers.
+
+In future versions, this module can be extended with OpenAI, Ollama, Groq, or another LLM provider through a provider-based architecture.
+
+---
+
+## Example Response
+
+```json
+{
+  "alert_id": 1,
+  "title": "Anomaly detected: failed_transaction",
+  "severity": "high",
+  "risk_score": 90,
+  "status": "open",
+  "summary": "Alert 'Anomaly detected: failed_transaction' was generated with severity 'high' and risk score 90.",
+  "severity_explanation": "High severity indicates suspicious activity with significant risk. The event should be reviewed as soon as possible and correlated with related logs.",
+  "possible_causes": [
+    "Suspicious transaction behavior.",
+    "Transaction pattern differs from expected legitimate activity.",
+    "Potential financial fraud or abnormal user behavior."
+  ],
+  "recommended_actions": [
+    "Review the related security event details.",
+    "Check correlated alerts and recent activity from the same source.",
+    "Verify whether similar events occurred in a short time window.",
+    "Investigate the source IP and destination system immediately.",
+    "Review firewall, application, and authentication logs.",
+    "Consider temporarily blocking or isolating suspicious traffic."
+  ],
+  "source": "rule_based"
+}
+```
+
+## Swagger Screenshot
+
+![Rule-Based Alert Explanation](images/swagger_alert_explanation_rule_based.png)
+
+---
+
 # Summary
 
 ThreatLens AI currently provides:
