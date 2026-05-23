@@ -1,16 +1,11 @@
 from app.db.models.alert import Alert
-from app.repositories.alert_repository import AlertRepository
+from app.services.alert_explanations.providers.base import AlertExplanationProvider
 
-class AlertExplanationService:
-    def __init__(self, alert_repo: AlertRepository) -> None:
-        self.alert_repo = alert_repo
 
-    def explain_alert(self, alert_id: int) -> dict:
-        alert = self.alert_repo.get_by_id(alert_id)
+class RuleBasedAlertExplanationProvider(AlertExplanationProvider):
+    source = "rule_based"
 
-        if not alert:
-            raise ValueError("Alert not found")
-
+    def generate(self, alert: Alert) -> dict:
         severity = self._to_str(alert.severity)
         status = self._to_str(alert.status)
 
@@ -30,7 +25,7 @@ class AlertExplanationService:
                 severity=severity,
                 risk_score=alert.risk_score,
             ),
-            "source": "rule_based",
+            "source": self.source,
         }
 
     def _build_summary(self, alert: Alert) -> str:
@@ -148,4 +143,4 @@ class AlertExplanationService:
         if hasattr(value, "value"):
             return value.value
 
-        return str(value)    
+        return str(value)

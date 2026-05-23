@@ -6,7 +6,7 @@ from app.db.session import get_db
 from app.db.models.user import User
 from app.repositories.alert_repository import AlertRepository
 from app.services.alert_service import AlertService
-from app.services.alert_explanation_service import AlertExplanationService
+from app.services.alert_explanations.alert_explanation_service import AlertExplanationService
 from app.schemas.alert import AlertUpdateRequest, AlertResponse
 from app.schemas.alert_explanation import AlertExplanationResponse
 
