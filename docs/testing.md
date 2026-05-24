@@ -130,6 +130,41 @@ Tested scenarios:
 
 ## Test Results
 
+### Current Test Result — Rule-Based Provider Unit Tests
+
+Current test result:
+
+```text
+34 passed
+```
+
+This result includes:
+
+- health endpoint tests
+- root endpoint test
+- protected endpoint authentication tests
+- authentication and RBAC integration tests
+- alert lifecycle tests
+- detection endpoint contract tests
+- alert explanation endpoint tests
+- rule-based alert explanation provider unit tests
+
+New provider-level scenarios verified:
+
+- rule-based provider returns the expected response contract
+- high severity alert returns a high severity explanation
+- transaction/fraud-related alert returns transaction-specific possible causes
+- autoencoder/network anomaly alert returns network anomaly-related possible causes
+
+These unit tests validate the rule-based explanation logic independently from FastAPI endpoint handling and PostgreSQL integration tests.
+
+Screenshot from local test execution:
+
+![Rule-Based Provider Unit Tests](images/pytest_provider_unit_tests_34_passed.PNG)
+
+---
+
+
 ### Current Test Result — Alert Explanation Endpoint Tests
 
 Current test result:
@@ -340,6 +375,11 @@ Current test coverage focuses on:
 | Alert explanation RBAC protection | Implemented |
 | Alert explanation response contract | Implemented |
 | Non-existing alert explanation validation | Implemented |
+| Rule-based alert explanation provider | Implemented |
+| Provider response contract test | Implemented |
+| Provider severity explanation logic | Implemented |
+| Provider transaction/fraud causes logic | Implemented |
+| Provider autoencoder anomaly causes logic | Implemented |
 | Repository tests | Planned |
 | Service layer tests | Planned |
 | CI test execution | Planned |
