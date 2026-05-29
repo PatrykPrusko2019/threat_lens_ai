@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    app_name: str = "ThreatLeans AI"
+    app_name: str = "ThreatLens AI"
     debug: bool = True
 
     db_host: str = "localhost"
@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
 
+    alert_explanation_provider: str = "rule_based"
+    openai_api_key: str | None = None
+    openai_alert_model: str = "gpt-4o-mini"
+
+    
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     @property
