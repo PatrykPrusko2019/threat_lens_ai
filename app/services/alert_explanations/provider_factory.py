@@ -3,11 +3,19 @@ from app.services.alert_explanations.providers.base import AlertExplanationProvi
 from app.services.alert_explanations.providers.rule_based_provider import (
     RuleBasedAlertExplanationProvider,
 )
+from app.services.alert_explanations.providers.openai_provider import (
+    OpenAIAlertExplanationProvider,
+) 
+
 
 def get_alert_explanation_provider() -> AlertExplanationProvider:
     provider_name = settings.alert_explanation_provider.lower()
 
+    if provider_name == "openai":
+        return OpenAIAlertExplanationProvider()
+    
     if provider_name == "rule_based":
         return RuleBasedAlertExplanationProvider()
 
+    
     raise ValueError(f"Unsupported alert explanation provider: {provider_name}") 
