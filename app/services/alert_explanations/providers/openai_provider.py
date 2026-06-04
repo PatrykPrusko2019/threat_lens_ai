@@ -48,23 +48,23 @@ class OpenAIAlertExplanationProvider(AlertExplanationProvider):
 
     def _build_prompt(self, alert: Alert) -> str:
         return f"""
-Generate a concise cybersecurity alert explanation.str
+        Generate a concise cybersecurity alert explanation.str
 
-Alert data:
-- Title: {alert.title}
-- Severity: {self._to_str(alert.severity)}
-- Risk score: {alert.risk_score}
-- Status: {self._to_str(alert.status)}
-- Description: {alert.description or "No description available"}
+        Alert data:
+        - Title: {alert.title}
+        - Severity: {self._to_str(alert.severity)}
+        - Risk score: {alert.risk_score}
+        - Status: {self._to_str(alert.status)}
+        - Description: {alert.description or "No description available"}
 
-Return JSON with exactly these fields:
-{{
-    "summary": "short explanation of what happened",
-    "severity_explanation": "why this severity matters",
-    "possible_causes": ["cause 1", "cause 2", "cause 3"],
-    "recommended_actions": ["action 1", "action 2", "action 3"]
-}}
-""".strip()
+        Return JSON with exactly these fields:
+        {{
+            "summary": "short explanation of what happened",
+            "severity_explanation": "why this severity matters",
+            "possible_causes": ["cause 1", "cause 2", "cause 3"],
+            "recommended_actions": ["action 1", "action 2", "action 3"]
+        }}
+        """.strip()
     
 
     def _to_str(self, value) -> str:
