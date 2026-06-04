@@ -396,6 +396,29 @@ This project focuses on:
 
 ---
 
+## Alert Explanation Providers
+
+ThreatLens AI uses a provider-based architecture for alert explanations.
+
+The default provider is currently `rule_based`, which keeps the system deterministic, testable, and independent from external APIs.
+
+The project also includes an OpenAI provider foundation for future LLM-based alert explanations.
+
+Available providers:
+
+- `rule_based` — deterministic provider used by default
+- `openai` — LLM-based provider using the OpenAI API
+
+Example configuration:
+
+```env
+ALERT_EXPLANATION_PROVIDER=rule_based
+OPENAI_API_KEY=
+OPENAI_ALERT_MODEL=gpt-4o-mini
+```
+
+---
+
 ## Frontend
 
 - React dashboard
@@ -420,9 +443,3 @@ This project focuses on:
 The platform is continuously expanded with new AI detection modules and cybersecurity features.
 
 ---
-
-# 👨‍💻 Author
-
-Patryk Prusko
-
-AI • Backend • Cybersecurity • Machine Learning
