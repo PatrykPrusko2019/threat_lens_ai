@@ -1,7 +1,7 @@
 # 🚀 ThreatLens AI
 
 
-[![Tests](https://github.com/PatrykPrusko2019/threat_lens_ai/actions/workflows/tests.yml/badge.svg)](https://github.com/PatrykPrusko2019/threat_lens_ai/actions/workflows/tests.yml)
+[![Tests](https://github.com/PatrykPrusko2019/threat_lens_ai/actions/workflows/tests.yml/badge.svg)](https://github.com/PatrykPrusko2019/threat_lens_ai/actions/workflows/test.yml)
 
 
 ## AI-Powered Cybersecurity & Fraud Detection Platform
