@@ -16,7 +16,24 @@ class EventService:
         )    
         return self.repo.create(event)
     
-    def get_events(self):
-        return self.repo.get_all()
+    def get_events(
+            self,
+            event_type: str | None = None,
+            severity: str | None = None,
+            source_ip: str | None = None,
+            limit: int = 50,
+    ):
+        return self.repo.get_all(
+            event_type=event_type,
+            severity=severity,
+            source_ip=source_ip,
+            limit=limit,
+        )
     
-    
+    def get_event_by_id(self, event_id: int):
+        event = self.repo.get_by_id(event_id)
+
+        if not event:
+            raise ValueError("Event not found")
+        
+        return event

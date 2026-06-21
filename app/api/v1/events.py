@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.api.dependencies.auth import get_current_user, require_admin
@@ -21,8 +21,32 @@ def create_event(
 
 @router.get("/", response_model=list[EventResponse])
 def list_events(
+    event_type: str | None = None,
+    severity: str | None = None,
+    source_ip: str | None = None,
+    limit: int = Query(default=50, ge=1, le=200),
     db: Session = Depends(get_db),
     _: User = Depends(require_admin),
 ):
     service = EventService(EventRepository(db))
-    return service.get_events()
+
+    return service.get_events(
+        event_type=event_type,
+        severity=severity,
+        source_ip=source_ip,
+        limit=limit,
+    )
+
+@router.get("/{event_id}", response_model=EventResponse)
+def get_event(
+    event_id: int,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    service = EventService(EventRepository(db))
+
+    try:
+        return service.get_event_by_id(event_id)
+    
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Event not found")
