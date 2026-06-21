@@ -41,5 +41,8 @@ class EventRepository:
             self.db.query(SecurityEvent)
             .filter(SecurityEvent.id == event_id)
             .first()
-        )            
+        )
+
+    def count_all(self) -> int:
+        return self.db.query(SecurityEvent).count()            
             
