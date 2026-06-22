@@ -1,17 +1,66 @@
+# Virtual environments
 .venv/
+venv/
+env/
+backend/.venv/
+frontend/.venv/
+
+# Python cache
 __pycache__/
 *.pyc
-.env
+*.pyo
+*.pyd
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.test.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+!backend/.env.test.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# IDE / editor
 .idea/
 .vscode/
-ml/data/*
-!ml/data/.gitkeep
-ml/models/*.pkl
+
+# OS files
+desktop.ini
+.DS_Store
+
+# Frontend dependencies and builds
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Backend ML/data artifacts
+backend/ml/data/*
+!backend/ml/data/.gitkeep
+backend/ml/models/*.pkl
+backend/ml/models/**/*.pkl
+backend/ml/models/*.joblib
+backend/ml/models/**/*.joblib
+backend/ml/models/*.h5
+backend/ml/models/**/*.h5
+backend/ml/models/*.keras
+backend/ml/models/**/*.keras
+
+# Temporary/local files
 temp_repo/
-ml/models/*.pkl
-ml/models/**/*.pkl
-temp_repo/
-.env.test
 test_threatlens.db
