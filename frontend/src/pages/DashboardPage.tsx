@@ -1,8 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { Activity, AlertTriangle, Brain, Radar } from "lucide-react";
+import {
+  Activity,
+  AlertTriangle,
+  Brain,
+  Radar,
+  UserCircle,
+} from "lucide-react";
 
 import { getDashboardSummary } from "../api/dashboardApi";
 import { StatCard } from "../components/ui/StatCard";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 function getSeverityClass(severity: string) {
   if (severity === "critical") {
@@ -37,6 +44,12 @@ export function DashboardPage() {
     queryKey: ["dashboard-summary"],
     queryFn: getDashboardSummary,
   });
+
+  const {
+    data: currentUser,
+    isLoading: isCurrentUserLoading,
+    isError: isCurrentUserError,
+  } = useCurrentUser();
 
   if (isLoading) {
     return (
@@ -167,34 +180,95 @@ export function DashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-          <h3 className="text-lg font-semibold">AI Security Modules</h3>
-          <p className="mt-1 text-sm text-slate-400">
-            Active detection components
-          </p>
+        <div className="space-y-6">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/10 p-3 text-cyan-300">
+                <UserCircle size={24} />
+              </div>
 
-          <div className="mt-5 space-y-4">
-            <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-              <p className="font-medium text-cyan-300">Intrusion Detection</p>
-              <p className="mt-1 text-sm text-slate-400">
-                RandomForest + rule-based analysis
-              </p>
+              <div>
+                <h3 className="text-lg font-semibold">Logged in user</h3>
+                <p className="text-sm text-slate-400">
+                  Current authenticated session
+                </p>
+              </div>
             </div>
 
-            <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-              <p className="font-medium text-cyan-300">
-                Autoencoder Anomaly Detection
-              </p>
-              <p className="mt-1 text-sm text-slate-400">
-                Deep learning anomaly scoring
-              </p>
-            </div>
+            <div className="mt-5 space-y-3 rounded-xl border border-slate-800 bg-slate-950 p-4">
+              <div>
+                <p className="text-xs text-slate-500">Email</p>
+                <p className="mt-1 text-sm font-medium text-slate-200">
+                  {isCurrentUserLoading
+                    ? "Loading..."
+                    : currentUser?.email ?? "Unavailable"}
+                </p>
+              </div>
 
-            <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-              <p className="font-medium text-cyan-300">AI Assistant</p>
-              <p className="mt-1 text-sm text-slate-400">
-                Future LLM-based security agent
-              </p>
+              <div>
+                <p className="text-xs text-slate-500">Role</p>
+                <span className="mt-1 inline-flex rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-300">
+                  {isCurrentUserLoading
+                    ? "Loading..."
+                    : currentUser?.role ?? "unknown"}
+                </span>
+              </div>
+
+              <div>
+                <p className="text-xs text-slate-500">Account status</p>
+                <p className="mt-1 text-sm text-slate-300">
+                  {currentUser?.is_activate === false ? "Inactive" : "Active"}
+                </p>
+              </div>
+
+              {currentUser?.full_name && (
+                <div>
+                  <p className="text-xs text-slate-500">Full name</p>
+                  <p className="mt-1 text-sm text-slate-300">
+                    {currentUser.full_name}
+                  </p>
+                </div>
+              )}
+
+              {isCurrentUserError && (
+                <p className="text-xs text-red-300">
+                  Could not load current user data.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+            <h3 className="text-lg font-semibold">AI Security Modules</h3>
+            <p className="mt-1 text-sm text-slate-400">
+              Active detection components
+            </p>
+
+            <div className="mt-5 space-y-4">
+              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+                <p className="font-medium text-cyan-300">
+                  Intrusion Detection
+                </p>
+                <p className="mt-1 text-sm text-slate-400">
+                  RandomForest + rule-based analysis
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+                <p className="font-medium text-cyan-300">
+                  Autoencoder Anomaly Detection
+                </p>
+                <p className="mt-1 text-sm text-slate-400">
+                  Deep learning anomaly scoring
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+                <p className="font-medium text-cyan-300">AI Assistant</p>
+                <p className="mt-1 text-sm text-slate-400">
+                  Future LLM-based security agent
+                </p>
+              </div>
             </div>
           </div>
         </div>
