@@ -6,6 +6,7 @@ import { DashboardPage } from "../pages/DashboardPage";
 import { EventsPage } from "../pages/EventsPage";
 import { LoginPage } from "../pages/LoginPage";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { AiDetectionPage } from "../pages/AiDetectionPage.";
 
 export function App() {
     return (
@@ -23,6 +24,7 @@ export function App() {
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/alerts" element={<AlertsPage />} />
                 <Route path="/events" element={<EventsPage />} />
+                <Route path="/ai-detection" element={<AiDetectionPage />} />
             </Route>
         </Routes>
     );

@@ -20,7 +20,7 @@ class FraudService:
 
         if is_fraud:
             event = SecurityEvent(
-                event_repo="fraud_detected",
+                event_type="fraud_detected",
                 severity="high",
                 description=f"Fraud detected with score {float(score)}",
             )
