@@ -1,10 +1,18 @@
-import { Activity, AlertTriangle, LayoutDashboard, ShieldCheck } from "lucide-react";
+import { 
+  Activity, 
+  AlertTriangle, 
+  LayoutDashboard, 
+  ShieldCheck,
+  BrainCircuit, 
+} from "lucide-react";
+
 import { NavLink } from "react-router-dom";
 
 const navigation = [
     { label: "Dashboard", path: "/", icon: LayoutDashboard },
     { label: "Alerts", path: "/alerts", icon: AlertTriangle },
     { label: "Security Events", path: "/events", icon: Activity },
+    { label: "AI Detection", path: "/ai-detection", icon: BrainCircuit },
 ];
 
 export function Sidebar() {
