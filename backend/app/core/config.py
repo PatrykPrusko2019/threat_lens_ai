@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_name: str = "ThreatLens AI"
     debug: bool = True
+    sqlalchemy_echo: bool = False
 
     db_host: str = "localhost"
     db_port: int = 5432

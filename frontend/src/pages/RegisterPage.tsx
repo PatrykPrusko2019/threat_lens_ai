@@ -1,15 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { login } from "../api/authApi";
-import { saveAccessToken } from "../app/auth";
+import { register } from "../api/authApi";
 
-const DEMO_EMAIL = "admin@example.com";
-const DEMO_PASSWORD = "admin123";
-
-function getAuthErrorMessage(error: unknown) {
+function getRegisterErrorMessage(error: unknown) {
     if (axios.isAxiosError(error)) {
         const detail = error.response?.data?.detail;
 
@@ -17,38 +13,53 @@ function getAuthErrorMessage(error: unknown) {
             return detail;
         }
 
-        return "Login failed. Check email and password.";
+        if (Array.isArray(detail)) {
+            return detail
+                .map((item) => item?.msg ?? "Invalid registration data.")
+                .join(" ");
+        }
+
+        return "Registration failed. Check the form data.";
     }
 
-    return "Login failed. Try again.";
+    return "Registration failed. Try again.";
 }
 
-export function LoginPage() {
+function isValidEmail(email: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+export function RegisterPage() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const state = location.state as { message?: string } | null;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-
-    function useDemoCredentials() {
-        setEmail(DEMO_EMAIL);
-        setPassword(DEMO_PASSWORD);
-        setError(null);
-    }
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        if (!email.trim()) {
+        const normalizedEmail = email.trim();
+
+        if (!normalizedEmail) {
             setError("Email is required.");
             return;
         }
 
-        if (!password) {
-            setError("Password is required.");
+        if (!isValidEmail(normalizedEmail)) {
+            setError("Enter a valid email address.");
+            return;
+        }
+
+        if (password.length < 8) {
+            setError("Password must be at least 8 characters long.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
             return;
         }
 
@@ -56,11 +67,14 @@ export function LoginPage() {
         setIsLoading(true);
 
         try {
-            const response = await login({ email: email.trim(), password });
-            saveAccessToken(response.access_token);
-            navigate("/");
+            await register({ email: normalizedEmail, password });
+            navigate("/login", {
+                state: {
+                    message: "Account created successfully. You can now sign in.",
+                },
+            });
         } catch (requestError) {
-            setError(getAuthErrorMessage(requestError));
+            setError(getRegisterErrorMessage(requestError));
         } finally {
             setIsLoading(false);
         }
@@ -71,39 +85,10 @@ export function LoginPage() {
             <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/60 p-8 shadow-2xl shadow-black/30">
                 <div>
                     <p className="text-sm text-cyan-400">ThreatLens AI</p>
-                    <h1 className="mt-2 text-2xl font-semibold">
-                        Security Dashboard Login
-                    </h1>
+                    <h1 className="mt-2 text-2xl font-semibold">Create account</h1>
                     <p className="mt-2 text-sm text-slate-400">
-                        Sign in to access the SOC/SIEM monitoring panel.
+                        Register a user account for the local security dashboard.
                     </p>
-                </div>
-
-                {state?.message && (
-                    <div className="mt-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
-                        {state.message}
-                    </div>
-                )}
-
-                <div className="mt-6 rounded-xl border border-cyan-500/20 bg-cyan-500/10 p-4">
-                    <div className="flex items-start justify-between gap-3">
-                        <div>
-                            <p className="text-sm font-medium text-cyan-200">
-                                Local demo account
-                            </p>
-                            <p className="mt-1 text-xs text-slate-400">
-                                Use this account for Docker portfolio demo only.
-                            </p>
-                        </div>
-
-                        <button
-                            onClick={useDemoCredentials}
-                            className="shrink-0 rounded-lg border border-cyan-400/30 px-3 py-2 text-xs font-semibold text-cyan-200 transition hover:bg-cyan-400/10"
-                            type="button"
-                        >
-                            Fill demo
-                        </button>
-                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-5">
@@ -115,7 +100,7 @@ export function LoginPage() {
                             onChange={(event) => setEmail(event.target.value)}
                             type="email"
                             autoComplete="email"
-                            placeholder={DEMO_EMAIL}
+                            placeholder="analyst@example.com"
                         />
                     </div>
 
@@ -126,8 +111,24 @@ export function LoginPage() {
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
                             type="password"
-                            autoComplete="current-password"
-                            placeholder="••••••••"
+                            autoComplete="new-password"
+                            placeholder="At least 8 characters"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="text-sm text-slate-300">
+                            Confirm password
+                        </label>
+                        <input
+                            className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-500"
+                            value={confirmPassword}
+                            onChange={(event) =>
+                                setConfirmPassword(event.target.value)
+                            }
+                            type="password"
+                            autoComplete="new-password"
+                            placeholder="Repeat password"
                         />
                     </div>
 
@@ -142,17 +143,17 @@ export function LoginPage() {
                         className="w-full rounded-xl bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-60"
                         type="submit"
                     >
-                        {isLoading ? "Signing in..." : "Sign in"}
+                        {isLoading ? "Creating account..." : "Create account"}
                     </button>
                 </form>
 
                 <p className="mt-6 text-center text-sm text-slate-400">
-                    New to ThreatLens AI?{" "}
+                    Already have an account?{" "}
                     <Link
                         className="font-medium text-cyan-300 hover:text-cyan-200"
-                        to="/register"
+                        to="/login"
                     >
-                        Create an account
+                        Sign in
                     </Link>
                 </p>
             </div>

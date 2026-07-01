@@ -23,7 +23,7 @@ if env_test_path.exists():
 
 TEST_DATABASE_URL = os.getenv(
     "TEST_DATABASE_URL",
-    "postgresql://postgres:postgres@localhost:5432/threatlens_test",
+    "postgresql://postgres:postgres@localhost:5433/threatlens_test",
 )
 
 engine = create_engine(TEST_DATABASE_URL)

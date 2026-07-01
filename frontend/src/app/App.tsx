@@ -6,12 +6,14 @@ import { DashboardPage } from "../pages/DashboardPage";
 import { EventsPage } from "../pages/EventsPage";
 import { LoginPage } from "../pages/LoginPage";
 import { ProtectedRoute } from "./ProtectedRoute";
-import { AiDetectionPage } from "../pages/AiDetectionPage.";
+import { AiDetectionPage } from "../pages/AiDetectionPage";
+import { RegisterPage } from "../pages/RegisterPage";
 
 export function App() {
     return (
         <Routes>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             
 
             <Route 

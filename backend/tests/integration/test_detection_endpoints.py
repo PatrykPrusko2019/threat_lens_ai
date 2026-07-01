@@ -41,7 +41,7 @@ def valid_network_payload() -> dict:
         "packets_received": 1,
     }
 
-def test_regular_user_cannot_access_intrusion_check(client):
+def test_regular_user_can_access_intrusion_check(client):
     token = create_user(client, "regular-intrusion@example.com")
 
     response = client.post(
@@ -50,9 +50,14 @@ def test_regular_user_cannot_access_intrusion_check(client):
         headers={"Authorization": f"Bearer {token}"},
     )
 
-    assert response.status_code == 403
+    assert response.status_code == 200
 
-def test_regular_user_cannot_access_autoencoder_check(client):
+    data = response.json()
+
+    assert "intrusion" in data
+    assert "attack_probability" in data
+
+def test_regular_user_can_access_autoencoder_check(client):
     token = create_user(client, "regular-autoencoder@example.com")
 
     response = client.post(
@@ -61,7 +66,11 @@ def test_regular_user_cannot_access_autoencoder_check(client):
         headers={"Authorization": f"Bearer {token}"},
     )
 
-    assert response.status_code == 403
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert "anomaly" in data
 
 def test_intrusion_check_invalid_payload_returns_422(client, db_session):
     token = create_admin_token(

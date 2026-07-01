@@ -11,6 +11,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d threatlens"]
       interval: 5s
@@ -26,6 +27,7 @@ services:
     environment:
       APP_NAME: ${APP_NAME:-ThreatLens AI}
       DEBUG: ${DEBUG:-True}
+      SQLALCHEMY_ECHO: "False"
 
       DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/threatlens}
 

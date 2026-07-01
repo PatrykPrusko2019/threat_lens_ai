@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.api.dependencies.auth import require_admin
+from app.api.dependencies.auth import get_current_user
 from app.db.session import get_db
 from app.repositories.alert_repository import AlertRepository
 from app.repositories.event_repository import EventRepository
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/anomaly", tags=["anomaly"])
 @router.get("/")
 def detect_anomalies(
     db: Session = Depends(get_db),
-    _=Depends(require_admin),
+    _=Depends(get_current_user),
 ):
     service = AnomalyService(
         event_repo=EventRepository(db),

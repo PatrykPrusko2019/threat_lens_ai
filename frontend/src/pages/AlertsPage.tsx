@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AlertTriangle, Brain, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 
+import { getCurrentUser } from "../api/usersApi";
 import { closeAlert, explainAlert, getAlerts } from "../api/alertsApi";
 import type { AlertExplanationResponse, AlertResponse } from "../types/alert";
 
@@ -43,10 +44,21 @@ export function AlertsPage() {
   const [explanation, setExplanation] =
     useState<AlertExplanationResponse | null>(null);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data: currentUser } = useQuery({
+  queryKey: ["current-user"],
+  queryFn: getCurrentUser,
+  });
+
+  const {
+    data: alerts = [],
+    isLoading: isAlertsLoading,
+    isError: isAlertsError,
+  } = useQuery({
     queryKey: ["alerts"],
     queryFn: getAlerts,
   });
+
+  const canManageAlerts = currentUser?.role === "admin";
 
   const explainMutation = useMutation({
     mutationFn: explainAlert,
@@ -73,7 +85,7 @@ export function AlertsPage() {
     closeMutation.mutate(alertId);
   }
 
-  if (isLoading) {
+  if (isAlertsLoading) {
     return (
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
         <p className="text-slate-400">Loading alerts...</p>
@@ -81,14 +93,14 @@ export function AlertsPage() {
     );
   }
 
-  if (isError || !data) {
+  if (isAlertsError) {
     return (
       <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-6">
         <h3 className="text-lg font-semibold text-red-300">
           Alerts unavailable
         </h3>
         <p className="mt-2 text-sm text-red-200/80">
-          Check if the backend is running and if your account has admin access.
+          Check if the backend is running and if you are signed in.
         </p>
       </div>
     );
@@ -107,9 +119,15 @@ export function AlertsPage() {
 
           <div className="flex items-center gap-2 rounded-full border border-slate-800 px-4 py-2 text-sm text-slate-300">
             <AlertTriangle size={16} />
-            {data.length} alerts
+            {alerts.length} alerts
           </div>
         </div>
+
+        {currentUser && !canManageAlerts && (
+          <div className="mb-5 rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-300">
+            Viewer mode: you can inspect alerts and generate explanations, but only admins can close alerts.
+          </div>
+        )}
 
         <div className="overflow-hidden rounded-xl border border-slate-800">
           <table className="w-full text-left text-sm">
@@ -125,14 +143,14 @@ export function AlertsPage() {
             </thead>
 
             <tbody>
-              {data.length === 0 ? (
+              {alerts.length === 0 ? (
                 <tr className="border-t border-slate-800">
                   <td className="px-4 py-6 text-slate-500" colSpan={6}>
                     No alerts available yet.
                   </td>
                 </tr>
               ) : (
-                data.map((alert) => (
+                alerts.map((alert) => (
                   <tr key={alert.id} className="border-t border-slate-800">
                     <td className="px-4 py-3">
                       <p className="font-medium text-slate-200">
@@ -184,7 +202,7 @@ export function AlertsPage() {
                           Explain
                         </button>
 
-                        {alert.status !== "closed" && (
+                        {canManageAlerts && alert.status !== "closed" &&  (
                           <button
                             onClick={() => handleClose(alert.id)}
                             className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/30 px-3 py-2 text-xs font-medium text-emerald-300 transition hover:bg-emerald-500/10"
