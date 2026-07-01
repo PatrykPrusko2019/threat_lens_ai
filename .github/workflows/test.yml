@@ -68,5 +68,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+
+      - name: Prepare ML models
+        run: python scripts/prepare_models.py
+          
       - name: Run tests
         run: pytest -v
