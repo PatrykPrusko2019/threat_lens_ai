@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
-from app.api.dependencies.auth import require_admin
+from app.api.dependencies.auth import get_current_user
 from app.db.session import get_db
 from app.repositories.alert_repository import AlertRepository
 from app.repositories.event_repository import EventRepository
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/intrusion", tags=["intrusion"])
 def check_intrusion(
     payload: NetworkEventRequest,
     db: Session = Depends(get_db),
-    _=Depends(require_admin)
+    _=Depends(get_current_user)
 ):
     service = IntrusionService(
         event_repo=EventRepository(db),

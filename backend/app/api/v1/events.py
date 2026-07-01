@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.api.dependencies.auth import get_current_user, require_admin
+from app.api.dependencies.auth import get_current_user
 from app.db.models.user import User
 from app.db.session import get_db
 from app.repositories.event_repository import EventRepository
@@ -26,7 +26,7 @@ def list_events(
     source_ip: str | None = None,
     limit: int = Query(default=50, ge=1, le=200),
     db: Session = Depends(get_db),
-    _: User = Depends(require_admin),
+    _: User = Depends(get_current_user),
 ):
     service = EventService(EventRepository(db))
 
@@ -41,7 +41,7 @@ def list_events(
 def get_event(
     event_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_admin),
+    _: User = Depends(get_current_user),
 ):
     service = EventService(EventRepository(db))
 

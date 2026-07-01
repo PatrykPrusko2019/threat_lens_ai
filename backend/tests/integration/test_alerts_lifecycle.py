@@ -80,7 +80,7 @@ def test_admin_can_list_alerts(client, db_session):
      assert data[0]["severity"] == Severity.MEDIUM.value
      assert data[0]["risk_score"] == 50
 
-def test_regular_user_cannot_list_alerts(client, db_session):
+def test_regular_user_can_list_alerts(client, db_session):
      token = create_user(client, "regular-alerts-user@example.com")
 
      event = create_security_event(db_session)
@@ -91,7 +91,12 @@ def test_regular_user_cannot_list_alerts(client, db_session):
           headers={"Authorization": f"Bearer {token}"},
      )
 
-     assert response.status_code == 403
+     assert response.status_code == 200
+
+     data = response.json()
+
+     assert isinstance(data, list)
+     assert len(data) == 1
 
 def test_admin_can_close_alert(client, db_session):
      admin_email = "close-alert-admin@example.com"

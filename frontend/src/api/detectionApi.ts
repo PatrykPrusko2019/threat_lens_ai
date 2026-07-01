@@ -14,7 +14,7 @@ const endpointByModule: Record<DetectionModule, string> = {
 export async function runDetection(
     module: DetectionModule,
     payload: DetectionRequest,
-): Promise<DetectionRequest> {
+): Promise<DetectionResponse> {
     const response = await apiClient.post<DetectionResponse>(
         endpointByModule[module],
         payload,

@@ -147,7 +147,7 @@ def test_alert_explanation_contains_transaction_causes(client, db_session):
     assert data["severity_explanation"].startswith("High severity")
 
 
-def test_regular_user_cannot_explain_alert(client, db_session):
+def test_regular_user_can_explain_alert(client, db_session):
     token = create_user_token(
         client,
         "regular-explanation-user@example.com",
@@ -161,7 +161,14 @@ def test_regular_user_cannot_explain_alert(client, db_session):
         headers={"Authorization": f"Bearer {token}"},
     )
 
-    assert response.status_code == 403
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert "summary" in data
+    assert "severity_explanation" in data
+    assert "possible_causes" in data
+    assert "recommended_actions" in data
 
 
 def test_explain_non_existing_alert_returns_404(client, db_session):

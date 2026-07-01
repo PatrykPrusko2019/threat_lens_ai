@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.api.dependencies.auth import require_admin
+from app.api.dependencies.auth import get_current_user
 from app.db.session import get_db
 from app.repositories.event_repository import EventRepository
 from app.repositories.alert_repository import AlertRepository
@@ -13,7 +13,7 @@ router = APIRouter(prefix="/fraud", tags=["fraud"])
 def check_fraud(
     payload: FraudRequest,
     db: Session = Depends(get_db),
-    _=Depends(require_admin),
+    _=Depends(get_current_user),
 ):
     service = FraudService(
         event_repo=EventRepository(db),
