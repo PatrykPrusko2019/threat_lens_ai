@@ -30,6 +30,7 @@ services:
       SQLALCHEMY_ECHO: "False"
 
       DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/threatlens}
+      TEST_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/threatlens_test
 
       DB_HOST: ${DB_HOST:-postgres}
       DB_PORT: ${DB_PORT:-5432}

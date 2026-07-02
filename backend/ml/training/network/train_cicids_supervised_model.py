@@ -24,8 +24,8 @@ def find_label_column(df: pd.DataFrame) -> str:
     for column in ["Label", "label", "ClassLabel", "class_label", "Class", "class"]:
         if column in df.columns:
             return column
-        
-        raise ValueError(f"Label column not found. Columns: {df.columns.tolist()}")
+
+    raise ValueError(f"Label column not found. Columns: {df.columns.tolist()}")
     
 
 def prepare_data(df: pd.DataFrame):
